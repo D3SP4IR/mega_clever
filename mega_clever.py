@@ -364,17 +364,19 @@ while True:
             while flag:
                 try:
                     print("Press path to place a block!! ")
-                    x=int(input("X = "))
+                    x=input("X = ")
+                    if x.lower()=='pass':
+                        n_pass += 1
+                        pss = False
+                        break
+                    x=int(x)
                     y=int(input("Y = "))
 
                     if x<0 or y<0 or x>19 or y>19:
                         print('position out of range!!')
                         continue
 
-                    if x=='pass':
-                        n_pass += 1
-                        pss = False
-                        break
+                    
 
                     flag=False
                 except:
