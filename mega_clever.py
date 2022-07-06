@@ -61,6 +61,70 @@ def validate_play(board, block, row, col):
 
 ##################################################################################################
 
+# flag
+def flag_x(flag):
+    while flag:
+        try:
+            print("Press path to place a block!! ")
+            x=int(input("X = "))
+            y=int(input("Y = "))
+            if x<0 or y<0 or x>19 or y>19:
+                print('position out of range!!')
+                continue
+            flag=False
+        except:
+            print("Only number!!")
+    return x,y,flag
+
+##################################################################################################
+
+#select block
+
+def select_block(z):
+    while True:
+
+        # show current block
+        print()
+        for a in block[z]:
+            for b in a:
+                print('#' if b==1 else ' ', end='')
+            print()
+        print()
+
+        blocknum_check=input("Press 'OK' to select and 'NEXT' to choose another block. ")
+
+        if blocknum_check.lower()=="ok":
+            break
+        elif blocknum_check.lower()!="next":
+              continue
+        z+=1
+        z=0 if z>20 else z
+    return z
+###############################################################################################
+
+# rotate block
+def rotate_block(rotateblock_numcheck,form,blk):
+    while rotatedblock_numcheck:
+
+        # show selected block
+        print()
+        for a in blk:
+            for b in a:
+                print('#' if b==1 else ' ', end='')
+            print()
+        print()
+
+        asktoflip=input("Press 'F' to flip and 'OK' to place a block.")
+
+        if asktoflip.lower()=="ok":
+            break
+        elif asktoflip.lower()=="f":
+            blk=block_rotation(blk,form)
+            form+=1
+            form=0 if form>7 else form
+        else:
+            continue
+    return blk
 # initialize board (20*20)
 board = [[0 for _ in range(20)] for _ in range(20)]
 
@@ -200,11 +264,11 @@ block = [
 # game loop
 while True:
 
-    ###############################################################################################  
+##################################################################################################  
 
     # user input
     checker=input("Press ==>'P' to play and ==> 'Q' to quit ==> ")
-
+    
     if checker.lower()=="q":
         print("Turn end.")
         break
@@ -213,76 +277,32 @@ while True:
     else:
         print("Try again!!!")
         continue
+###############################################################################################  
+    #flag
 
     flag = True
-    while flag:
-        try:
-            print("Press path to place a block!! ")
-            x=int(input("X = "))
-            y=int(input("Y = "))
-            if x<0 or y<0 or x>19 or y>19:
-                print('position out of range!!')
-                continue
-            flag=False
-        except:
-            print("Only number!!")
-
-    ###############################################################################################
-
-    z=0
-
-    # select block
-    while True:
-
-        # show current block
-        print()
-        for a in block[z]:
-            for b in a:
-                print('#' if b==1 else ' ', end='')
-            print()
-        print()
-
-        blocknum_check=input("Press 'OK' to select and 'NEXT' to choose another block. ")
-
-        if blocknum_check.lower()=="ok":
-            break
-        elif blocknum_check.lower()!="next":
-            continue
-
-        z+=1
-        z=0 if z>20 else z
     
-    ###############################################################################################  
+    
+    x,y,flag=flag_x(flag)
+###############################################################################################
+    # select block
+    
+    z=0
+    z=select_block(z)
+    
+###############################################################################################  
 
     rotatedblock_numcheck=True
     form=1
     blk=block[z]
-
     # rotate block
-    while rotatedblock_numcheck:
-
-        # show selected block
-        print()
-        for a in blk:
-            for b in a:
-                print('#' if b==1 else ' ', end='')
-            print()
-        print()
-
-        asktoflip=input("Press 'F' to flip and 'OK' to place a block.")
-
-        if asktoflip.lower()=="ok":
-            break
-        elif asktoflip.lower()=="f":
-            blk=block_rotation(blk,form)
-            form+=1
-            form=0 if form>7 else form
-        else:
-            continue
-
+    blk=rotate_block(rotatedblock_numcheck,form,blk)
+    
+    
+##################################################################################################
+ 
+    #validate block
     pss = True
-
-    # validate block
     while pss and not validate_play(board, blk, x, y):
         print('Please select new (x,y) position')
         flag = True
@@ -305,7 +325,6 @@ while True:
                 flag=False
             except:
                 print("Only number!!")
-
     if flag == False:
         # place block
         for i in range(x, x+5):
