@@ -19,11 +19,19 @@ def setBoardPosition(board):
     
 
 app = tk.Tk() # create instance
-app.geometry('840x840') # set window size
+
+# set window size
+app.geometry('840x840')
 app.minsize(840, 840)
 app.maxsize(840, 840)
-app.title('Mega Clever') # set title of the window
 
-board = setBoardPosition(makeBoardCanvas()) # initialize 20x20 board and then
+app.title('Mega Clever') # set title of the window
+board = setBoardPosition(makeBoardCanvas()) # initialize 20x20 board
+
+# test
+while True :
+    i = int(input())
+    j = int(input())
+    board[i][j] = tk.Canvas(app, width=40,height=40,border=0,bg="red",cursor="hand2").grid(column=i,row=j)
 
 app.mainloop()
