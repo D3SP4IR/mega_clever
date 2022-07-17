@@ -1,9 +1,6 @@
 ##################################################################################################
 
 # initialize board (20*20)
-from tabnanny import check
-
-
 board = [[0 for _ in range(20)] for _ in range(20)]
 
 # initialize block (21 pieces)
@@ -273,8 +270,8 @@ def select_block(z):
 ###############################################################################################
 
 # rotate block
-def rotate_block(rotateblock_numcheck,form,blk):
-    while rotatedblock_numcheck:
+def rotate_block(form,blk):
+    while True:
 
         # show selected block
         print()
@@ -297,106 +294,3 @@ def rotate_block(rotateblock_numcheck,form,blk):
     return blk
 
 ##################################################################################################
-
-# game start!!
-n = int(input('Input the number of player (2-4 players) : '))
-n_pass = 0
-game_end = False
-
-# game loop
-while True:
-
-    if game_end:
-        break
-
-    for id in range(1, n+1):
-
-        if n_pass == n:
-            game_end = True
-            break
-
-        print('player', id, 'turn!!')
-
-    ##################################################################################################  
-
-        # user input
-        pq = False
-        while(not pq):
-            checker=input("Press ==>'P' to play and ==> 'Q' to quit ==> ")
-            if checker=='q' or checker=='p':
-                pq = True
-        
-        if checker.lower()=="q":
-            print("Turn end.")
-            n_pass += 1
-            continue
-        elif checker.lower()=="p":
-            print("Start")
-
-    ###############################################################################################  
-
-        #flag
-        flag = True
-        x,y,flag=flag_x(flag)
-
-    ###############################################################################################
-
-        # select block
-        z=0
-        z=select_block(z)
-        
-    ###############################################################################################  
-
-        rotatedblock_numcheck=True
-        form=1
-        blk=block[z]
-
-        # rotate block
-        blk=rotate_block(rotatedblock_numcheck,form,blk)
-        
-    ##################################################################################################
-    
-        #validate block
-        pss = True
-        while pss and not validate_play(board, blk, x, y, id):
-            print('Please select new (x,y) position')
-            flag = True
-            while flag:
-                try:
-                    print("Press path to place a block!! ")
-                    x=input("X = ")
-
-                    if x.lower()=='pass':
-                        n_pass += 1
-                        pss = False
-                        break
-                    
-                    x=int(x)
-                    y=int(input("Y = "))
-
-                    if x<0 or y<0 or x>19 or y>19:
-                        print('position out of range!!')
-                        continue
-
-                    flag=False
-                except:
-                    print("Only number!!")
-
-        if flag == False:
-
-            n_pass = 0
-
-            # place block
-            for i in range(x, x+5):
-                for j in range(y, y+5):
-                    if 0<=i<=19 and 0<=j<=19:
-                        board[i][j] = id if block[z][i-x][j-y] else 0
-            
-            # print board
-            print('\n')
-            for i in board:
-                print(i)
-
-    ##################################################################################################
-
-print('GAME OVER!!')
